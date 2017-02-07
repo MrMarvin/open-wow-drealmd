@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: |
+  Open-WoW home location template.
+  Contains:
+    * One RDS (mysql) for realmd
+    * An EC Repository
+    * A CloudWatch Log Group
+Parameters:
+  RdsOpenWoWRealmdMasterPassword:
+    Type: String
+    Description: |
+      The password for the mysql user 'mangos'
+    Default: ''
+Resources:
+  RdsOpenWoWRealmd:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      AllocatedStorage: '5'
+      AllowMajorVersionUpgrade: 'false'
+      AutoMinorVersionUpgrade: 'true'
+      DBInstanceClass: 'db.t2.micro'
+      Port: '3306'
+      PubliclyAccessible: 'True'
+      StorageType: 'gp2'
+      BackupRetentionPeriod: '7'
+      MasterUsername: 'mangos'
+      MasterUserPassword: !Ref 'RdsOpenWoWRealmdMasterPassword'
+      PreferredBackupWindow: '02:18-02:48'
+      PreferredMaintenanceWindow: 'tue:02:58-tue:03:28'
+      DBName: 'reamld'
+      Engine: 'mysql'
+      EngineVersion: '5.6.27'
+      LicenseModel: 'general-public-license'
+      MultiAZ: 'true'
+      DBSubnetGroupName: !Ref 'RdsOpenWoWRealmdSubnet'
+      VPCSecurityGroups:
+        - !Ref 'sgrdslaunchwizard'
