@@ -1,3 +1,5 @@
+# ⚠️ Make sure you copy and change the .dist files!
+
 # Install the hub a.k.a. the base
 ```
 aws --region=$r cloudformation create-stack --stack-name openwow-base --template-body file://cfn_base.yaml --parameters file://cfn_base_parameters.json
