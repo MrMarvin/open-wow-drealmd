@@ -29,8 +29,8 @@ Parameters:
     Type: String
     Description: >
       Specifies the EC2 instance type for your container instances.
-      Defaults to t2.small
-    Default: t2.small
+      Defaults to t2.micro
+    Default: t2.micro
     ConstraintDescription: must be a valid EC2 instance type.
   VpcId:
     Type: String
@@ -266,7 +266,7 @@ Resources:
       LaunchConfigurationName: !Ref EcsInstanceLc
       MinSize: '0'
       MaxSize: !Ref AsgMaxSize
-      DesiredCapacity: !Ref AsgMaxSize
+      DesiredCapacity: '1'
       LoadBalancerNames:
         - !Ref ElbOpenWoWRealmd
       Tags:

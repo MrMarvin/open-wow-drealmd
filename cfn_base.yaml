@@ -14,7 +14,10 @@ Parameters:
 Resources:
   RdsOpenWoWRealmd:
     Type: 'AWS::RDS::DBInstance'
+    DependsOn:
+      - RdsWorldOpenSecuritGroup
     Properties:
+      DBInstanceIdentifier: 'open-wow-base-realmd'
       AllocatedStorage: '5'
       AllowMajorVersionUpgrade: 'false'
       AutoMinorVersionUpgrade: 'true'
@@ -32,6 +35,19 @@ Resources:
       EngineVersion: '5.6.27'
       LicenseModel: 'general-public-license'
       MultiAZ: 'true'
-      DBSubnetGroupName: !Ref 'RdsOpenWoWRealmdSubnet'
       VPCSecurityGroups:
-        - !Ref 'sgrdslaunchwizard'
+        - !GetAtt RdsWorldOpenSecuritGroup.GroupId
+  RdsWorldOpenSecuritGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'All in allowed'
+      SecurityGroupIngress:
+        IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: '0.0.0.0/0'
+Outputs:
+  OpenWoWRealmdRdsEndpoint:
+    Value: !GetAtt RdsOpenWoWRealmd.Endpoint.Address
+    Export:
+      Name: !Sub 'open-wow-base-realmd-endpoint'
